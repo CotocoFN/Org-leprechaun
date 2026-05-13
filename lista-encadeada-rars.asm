@@ -1,6 +1,10 @@
+#Luiz Augusto Scarsi                 2311101009
+#Bruno Francisco Neckel              2221101035
+#Paulo Henrique Moura FeijÃ³ Braga    2221101020
+
 .data
-    node_size:      .word 8  # Tamanho do nó (8 bytes)
-    head:           .word 0  # Ponteiro do início da lista
+    node_size:      .word 8  # Tamanho do nï¿½ (8 bytes)
+    head:           .word 0  # Ponteiro do inï¿½cio da lista
     menu:           .asciz "\n==============================\n1. Inserir elemento na lista\n2. Remover elemento na lista\n3. Mostrar todos os elementos\n4. Sair\nEscolha uma opcao: "
     insert_msg:     .asciz "\nDigite um valor para ser inserido na lista: \n"
     insert_success: .asciz "\nValor inserido na lista.\n"
@@ -21,7 +25,7 @@ main:
     li a7, 5
     ecall   # Input
     
-# testa qual opção escolhida
+# testa qual opï¿½ï¿½o escolhida
     li t1, 1
     beq a0, t1, call_insert_element
     li t1, 2
@@ -42,14 +46,14 @@ call_insert_element:
     mv a1, a0   # move valor do input (a0) para a1
     la a0, head # a0 vira head
     
-# reserva endereço em ra para ret
+# reserva endereï¿½o em ra para ret
     addi sp, sp, -4
     sw ra, 0(sp)
     call insert_element
     lw ra, 0(sp)
     addi sp, sp, 4
     
-# confere sucesso ou erro da operação
+# confere sucesso ou erro da operaï¿½ï¿½o
     li t1, 1
     beq a0, t1, insert_success_message
     la a0, insert_fail
@@ -65,28 +69,28 @@ insert_success_message:
 
 insert_element: # (a0 = 'head' / a1 = valor)
     mv t2, a0
-# aloca novo nó
+# aloca novo nï¿½
     li a7, 9
     lw a0, node_size
     ecall
     beqz a0, insert_alloc_fail
-# inicializa nó
+# inicializa nï¿½
     sw a1, 0(a0)
     sw zero, 4(a0)
     lw t0, 0(t2)           # pega head
     beqz t0, insert_first  # lista vazia
     
-# percorre até último nó
+# percorre atï¿½ ï¿½ltimo nï¿½
     mv t1, t0
 
 insert_loop:
-    lw t4, 4(t1)         # próximo nó
-    beqz t4, insert_end  # achou último
+    lw t4, 4(t1)         # prï¿½ximo nï¿½
+    beqz t4, insert_end  # achou ï¿½ltimo
     mv t1, t4
     j insert_loop
 
 insert_end:
-    sw a0, 4(t1)  # último aponta para o novo nó
+    sw a0, 4(t1)  # ï¿½ltimo aponta para o novo nï¿½
     j insert_done
 
 insert_first:
@@ -102,7 +106,7 @@ insert_alloc_fail:
 # --------------Remove Elemento-------------------#
 call_remove_element_by_index:
 
-# reserva endereço em ra pra ret
+# reserva endereï¿½o em ra pra ret
     addi sp, sp, -4
     sw ra, 0(sp)
     call remove_element_by_index
@@ -119,11 +123,11 @@ remove_element_by_index:
     li a7, 5
     ecall
 
-    mv a1, a0  # move índice para a1
+    mv a1, a0  # move ï¿½ndice para a1
     la a0, head
     call remove
 
-# recupera endereço de ret
+# recupera endereï¿½o de ret
     lw ra, 0(sp)
     addi sp, sp, 4
 
@@ -132,7 +136,7 @@ remove_element_by_index:
     beq a0, t1, remove_success_label
     j remove_fail_label
 
-# (a1 = índice)
+# (a1 = ï¿½ndice)
 remove:
     addi sp, sp, -4
     sw ra, 0(sp)
@@ -140,9 +144,9 @@ remove:
     lw t1, 0(t0)
     beqz t1, remove_empty
 
-    mv t4, t0  # t4 = nó anterior
-    mv t2, a1  # t2 = índice alvo
-    li a6, 1   # a6 = índice atual
+    mv t4, t0  # t4 = nï¿½ anterior
+    mv t2, a1  # t2 = ï¿½ndice alvo
+    li a6, 1   # a6 = ï¿½ndice atual
 
 # percorre lista
 remove_loop:
@@ -162,16 +166,16 @@ remove_empty:
     li a0, -1
     ret
 
-# ---------------------Remove Nó--------------------#
+# ---------------------Remove Nï¿½--------------------#
 remove_element:
-    lw t5, 4(t1)    # pega próximo nó
+    lw t5, 4(t1)    # pega prï¿½ximo nï¿½
     beq t4, t0, new_head
-    sw t5, 4(t4)    # anterior aponta para próximo
+    sw t5, 4(t4)    # anterior aponta para prï¿½ximo
     sw zero, 0(t1)  # limpa valor removido
     j remove_done
 
 new_head:
-    sw t5, 0(t4)  # head aponta pra próximo
+    sw t5, 0(t4)  # head aponta pra prï¿½ximo
 
 # (Retorna 1 (sucesso))
 remove_done:
@@ -209,7 +213,7 @@ print_list:
     beqz t0, print_empty_list
 
 print_list_loop:
-    lw a0, 0(t0)  # printa valor do nó
+    lw a0, 0(t0)  # printa valor do nï¿½
     li a7, 1
     ecall
 
@@ -217,7 +221,7 @@ print_list_loop:
     li a7, 11
     ecall
     
-    lw t0, 4(t0)  # avança pro next
+    lw t0, 4(t0)  # avanï¿½a pro next
     bnez t0, print_list_loop
 
     la a0, new_line  # quebra linha

@@ -1,3 +1,7 @@
+#Luiz Augusto Scarsi                 2311101009
+#Bruno Francisco Neckel              2221101035
+#Paulo Henrique Moura Feijó Braga    2221101020
+
 .data
     node_size:      .word 8  # Tamanho do nó (8 bytes)
     head:           .word 0  # Ponteiro do início da lista
